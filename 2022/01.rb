@@ -5,7 +5,7 @@ input = File.read('inputs/01.txt').split("\n\n")
 # PART I
 
 result = input
-  .map { |x| x.split.map(&:to_i).sum }
+  .map { |cals| cals.split.map(&:to_i).sum }
   .max
 
 p result
@@ -13,10 +13,9 @@ p result
 # PART II
 
 result = input
-  .map { |x| x.split.map(&:to_i).sum }
+  .map { |cals| cals.split.map(&:to_i).sum }
   .sort
-  .reverse
-  .take(3)
+  .last(3)
   .sum
 
 p result
