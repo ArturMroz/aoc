@@ -7,15 +7,14 @@ input = File.read('inputs/01.txt').split("\n")
 result = input
   .map { |row| row.scan(/\d/) }
   .map { |arr| arr.first + arr.last }
-  .map(&:to_i)
-  .sum
+  .sum(&:to_i)
 
 p result
 
 
 # PART II
 
-def to_digit(str)
+def parse_digit(str)
   case str
   when "one" then 1
   when "two" then 2
@@ -33,8 +32,6 @@ end
 result = input
   .map { |row| row.scan(/(?=(\d|one|two|three|four|five|six|seven|eight|nine))/).flatten }
   .map { |arr| [arr.first, arr.last] }
-  .map { |arr| arr.map { |str| to_digit(str) } }
-  .map { |digits| digits[0] * 10 + digits[1] }
-  .sum
+  .sum { |a, b| 10 * parse_digit(a) + parse_digit(b) }
 
 p result
