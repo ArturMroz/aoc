@@ -8,11 +8,9 @@ cubes = { "red" => 12, "green" => 13, "blue" => 14 }
 sum   = 0
 
 input.each do |line|
-  words = line.scan(/\w+/)
-  id    = words[1]
+  _, id, *sets = line.scan(/\w+/)
 
-  possible = words
-    .drop(2)
+  possible = sets
     .each_slice(2)
     .all? { |n, colour| cubes[colour] >= n.to_i }
 
@@ -27,10 +25,10 @@ p sum
 sum = 0
 
 input.each do |line|
-  max_cubes = { "red" => 0, "green" => 0, "blue" => 0 }
-  words     = line.scan(/\w+/)
+  max_cubes   = { "red" => 0, "green" => 0, "blue" => 0 }
+  _, _, *sets = line.scan(/\w+/)
 
-  words.drop(2).each_slice(2) do |n, colour|
+  sets.each_slice(2) do |n, colour|
     max_cubes[colour] = n.to_i if max_cubes[colour] < n.to_i
   end
 
