@@ -13,8 +13,7 @@ input.each do |card|
     scored       = winning & got
 
     if scored.size > 0
-        points = 2 ** (scored.size - 1)
-        sum += points
+        sum += 2 ** (scored.size - 1)
     end
 
     num_winning << scored.size
@@ -30,10 +29,8 @@ total = Hash.new(0)
 num_winning.each.with_index(1) do |num_win, i|
     total[i] += 1
 
-    total[i].times do
-        (i+1..i+num_win).each do |card_id|
-            total[card_id] += 1 
-        end
+    (i+1..i+num_win).each do |card_id|
+        total[card_id] += 1 * total[i]
     end
 end
 
