@@ -5,9 +5,9 @@ input = File.read('inputs/01.txt').lines
 # PART I
 
 result = input
-  .map { |line| line.scan(/\d/) }
+  .map { |line| line.scan /\d/ }
   .map { |arr| arr.first + arr.last }
-  .sum(&:to_i)
+  .sum &:to_i
 
 p result
 
@@ -16,8 +16,8 @@ p result
 
 Nums = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
-def parse_digit(str)
-  idx = Nums.index(str)
+def parse_digit str
+  idx = Nums.index str
   idx ? idx+1 : str.to_i
 end
 

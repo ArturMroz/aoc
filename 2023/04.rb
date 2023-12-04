@@ -4,20 +4,20 @@ input = File.read('inputs/04.txt').lines
 
 # PART I
 
-sum = 0
+sum         = 0
 num_winning = []
 
 input.each do |card|
     nums         = card.split(":")[1]
     winning, got = nums.split("|").map { |n| n.scan /\d+/ }
-    have         = winning & got
+    scored       = winning & got
 
-    if have.size > 0
-        points = 2 ** (have.size - 1)
+    if scored.size > 0
+        points = 2 ** (scored.size - 1)
         sum += points
     end
 
-    num_winning << have.size
+    num_winning << scored.size
 end
 
 p sum

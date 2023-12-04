@@ -11,8 +11,8 @@ def symbol_adjacent?(sy, sx, num)
 
   (ymin..ymax).each do |y|
     (xmin..xmax).each do |x|
-      if Grid[y][x] =~ /[^\d.]/
-        Stars[[x,y]] <<= num if Grid[y][x] == "*"
+      if Grid[y][x].match /[^\d.]/ 
+        Stars[[x, y]] <<= num if Grid[y][x] == "*"
         return true
       end
     end
@@ -25,8 +25,8 @@ sum = 0
 
 Grid.each_with_index do |line, y|
   matches_with_indices = []
-  line.scan(/\d+/) { |match| matches_with_indices << [match, $~.offset(0).first] }
-
+  line.scan(/\d+/) { |match| matches_with_indices << [match, $~.begin(0)] }
+    
   sum += matches_with_indices
     .filter { |num, idx| symbol_adjacent?(y, idx, num) }
     .sum { |num, _| num.to_i }
