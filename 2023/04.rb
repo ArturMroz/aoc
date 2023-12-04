@@ -2,36 +2,29 @@
 
 input = File.read('inputs/04.txt').lines
 
-# PART I
+total_score = 0
+card_counts = Hash.new 0
 
-sum         = 0
-num_winning = []
-
-input.each do |card|
+input.each_with_index do |card, id|
     nums         = card.split(":")[1]
     winning, got = nums.split("|").map { |n| n.scan /\d+/ }
-    scored       = winning & got
+    score        = (winning & got).size
 
-    if scored.size > 0
-        sum += 2 ** (scored.size - 1)
+    if score > 0
+        total_score += 2 ** (score - 1)
     end
 
-    num_winning << scored.size
+    card_counts[id] += 1
+
+    (id+1..id+score).each do |other_card_id|
+        card_counts[other_card_id] += card_counts[id]
+    end
 end
 
-p sum
+# PART I
 
+p total_score
 
 # PART II
 
-total = Hash.new(0)
-
-num_winning.each.with_index(1) do |num_win, i|
-    total[i] += 1
-
-    (i+1..i+num_win).each do |card_id|
-        total[card_id] += 1 * total[i]
-    end
-end
-
-p total.values.sum
+p card_counts.values.sum
