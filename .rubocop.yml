@@ -1,0 +1,14 @@
+AllCops:
+    NewCops: enable
+
+Layout/MultilineMethodCallIndentation:
+    EnforcedStyle: indented
+
+Layout/IndentationWidth:
+    Width: 4
+
+Naming/MethodParameterName:
+    Enabled: false
+
+Style/FrozenStringLiteralComment:
+    Enabled: false

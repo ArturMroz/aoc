@@ -6,17 +6,15 @@ total_score = 0
 card_counts = Hash.new 0
 
 input.each_with_index do |card, id|
-    nums         = card.split(":")[1]
-    winning, got = nums.split("|").map { |n| n.scan /\d+/ }
+    nums         = card.split(':')[1]
+    winning, got = nums.split('|').map { |n| n.scan(/\d+/) }
     score        = (winning & got).size
 
-    if score > 0
-        total_score += 2 ** (score - 1)
-    end
+    total_score += 2**(score - 1) if score.positive?
 
     card_counts[id] += 1
 
-    (id+1..id+score).each do |other_card_id|
+    (id + 1..id + score).each do |other_card_id|
         card_counts[other_card_id] += card_counts[id]
     end
 end
