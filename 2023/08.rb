@@ -4,14 +4,11 @@ input = File.read('inputs/08.txt').split("\n\n")
 
 inst = input[0].chars.cycle.each
 
-map            = {}
-starting_nodes = []
+map = {}
 
 input[1].lines.each do |line|
   node, left, right = line.scan(/\w+/)
   map[node] = [left, right]
-
-  starting_nodes << node if node[2] == 'A'
 end
 
 # PART I
@@ -28,9 +25,10 @@ p steps
 
 # PART II
 
-cur_nodes     = starting_nodes
-steps_by_node = {}
-steps         = 0
+starting_nodes = map.keys.filter { |k| k[2] == 'A' }
+cur_nodes      = starting_nodes
+steps_by_node  = {}
+steps          = 0
 
 until steps_by_node.size == starting_nodes.size
   next_inst = inst.next

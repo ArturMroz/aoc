@@ -8,13 +8,13 @@ cubes = { 'red' => 12, 'green' => 13, 'blue' => 14 }
 sum   = 0
 
 input.each do |line|
-    _, id, *reveals = line.scan(/\w+/)
+  _, id, *reveals = line.scan(/\w+/)
 
-    possible = reveals
-        .each_slice(2)
-        .all? { |n, colour| cubes[colour] >= n.to_i }
+  possible = reveals
+    .each_slice(2)
+    .all? { |n, colour| cubes[colour] >= n.to_i }
 
-    sum += id.to_i if possible
+  sum += id.to_i if possible
 end
 
 p sum
@@ -24,15 +24,15 @@ p sum
 sum = 0
 
 input.each do |line|
-    max_cubes = { 'red' => 0, 'green' => 0, 'blue' => 0 }
-    reveals = line.scan(/\w+/).drop(2)
+  max_cubes = { 'red' => 0, 'green' => 0, 'blue' => 0 }
+  reveals   = line.scan(/\w+/).drop(2)
 
-    reveals.each_slice(2) do |n, colour|
-        max_cubes[colour] = n.to_i if max_cubes[colour] < n.to_i
-    end
+  reveals.each_slice(2) do |n, colour|
+    max_cubes[colour] = n.to_i if max_cubes[colour] < n.to_i
+  end
 
-    power = max_cubes.values.reduce(&:*)
-    sum += power
+  power = max_cubes.values.reduce(:*)
+  sum += power
 end
 
 p sum
