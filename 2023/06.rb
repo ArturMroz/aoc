@@ -4,7 +4,7 @@ input = File.read('inputs/06.txt').lines
 
 # PART I
 
-times, records = input.map { |line| line.scan(/\d+/).map(&:to_i) }
+times, records = input.map { |line| line.split.drop(1).map(&:to_i) }
 
 total = times
   .zip(records)
@@ -17,7 +17,7 @@ p total
 
 # PART II, peasant brute force
 
-time, record = input.map { |line| line.scan(/\d+/).join.to_i }
+time, record = input.map { |line| line.split.drop(1).join.to_i }
 
 total = (1..time).count { |speed| (time - speed) * speed > record }
 

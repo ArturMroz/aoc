@@ -2,7 +2,7 @@
 
 input = File.read('inputs/05.txt').split("\n\n")
 
-seeds = input[0].scan(/\d+/).map(&:to_i)
+seeds = input[0].split.drop(1).map(&:to_i)
 
 # PART I
 
@@ -10,7 +10,7 @@ next_mapping = seeds
 
 input.drop(1).each do |group|
   mapping_ranges = group.lines.drop(1).map do |line|
-    dst, src, len = line.scan(/\d+/).map(&:to_i)
+    dst, src, len = line.split.map(&:to_i)
     [(src..src + len - 1), src - dst]
   end
 
@@ -30,7 +30,7 @@ next_mapping = seeds
 
 input.drop(1).each do |group|
   mapping_ranges = group.lines.drop(1).map do |line|
-    dst, src, len = line.scan(/\d+/).map(&:to_i)
+    dst, src, len = line.split.map(&:to_i)
     [(src..src + len - 1), src - dst]
   end
 

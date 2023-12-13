@@ -7,7 +7,7 @@ card_counts = Hash.new 0
 
 input.each_with_index do |card, id|
   nums         = card.split(':')[1]
-  winning, got = nums.split('|').map { |n| n.scan(/\d+/) }
+  winning, got = nums.split('|').map(&:split)
   score        = (winning & got).size
 
   total_score += 2**(score - 1) if score > 0
