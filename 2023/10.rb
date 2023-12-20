@@ -101,21 +101,19 @@ def double_grid_size(input, path)
       col = '.' unless path.include?([x, y])
 
       new_char =
-        case col
-        when '.', '7', '|', 'J'
+        if col =~ /[FL-]/ && input[y][x + 1] =~ /[J7-]/
+          '-'
+        else
           filler_char
-        when 'F', '-', 'L'
-          ['-', 'J', '7'].include?(input[y][x + 1]) ? '-' : filler_char
         end
 
       new_row1.push(col, new_char)
 
       new_char =
-        case col
-        when '.', '-', 'J', 'L'
+        if col =~ /[F7|]/ && input[y + 1][x] =~ /[JL|]/
+          '|'
+        else
           filler_char
-        when '7', '|', 'F'
-          ['|', 'J', 'L'].include?(input[y + 1][x]) ? '|' : filler_char
         end
 
       new_row2.push(new_char, filler_char)
