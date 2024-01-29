@@ -25,7 +25,7 @@ p total
 boxes = Array.new(256) { [] }
 
 input.split(',').each do |code|
-  label, op, focal = code.match(/([a-z]+)([-=])(\d)?/).captures
+  label, op, focal_len = code.match(/([a-z]+)([-=])(\d)?/).captures
 
   box_id = get_hash(label)
 
@@ -35,18 +35,18 @@ input.split(',').each do |code|
     idx = boxes[box_id].index { |b| b[0] == label }
 
     if idx
-      boxes[box_id][idx] = [label, focal]
+      boxes[box_id][idx] = [label, focal_len]
     else
-      boxes[box_id] << [label, focal]
+      boxes[box_id] << [label, focal_len]
     end
   end
 end
 
 focusing_power = 0
 
-boxes.each_with_index do |box, i|
-  box.each_with_index do |lens, j|
-    focusing_power += (i + 1) * (j + 1) * lens[1].to_i
+boxes.each.with_index(1) do |box, i|
+  box.each.with_index(1) do |(_, focal_len), j|
+    focusing_power += i * j * focal_len.to_i
   end
 end
 
