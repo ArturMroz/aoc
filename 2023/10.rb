@@ -66,7 +66,26 @@ path  = find_path(start, input)
 
 p path.size / 2
 
-# PART II
+# PART II, using maths
+
+def shoelace_formula(path)
+  total = (path + [path.first]).each_cons(2).sum do |(x1, y1), (x2, y2)|
+    (x1 * y2) - (x2 * y1)
+  end
+
+  total.abs / 2
+end
+
+def pick_theorem(area, num_boundary_points)
+  area - (num_boundary_points / 2) + 1
+end
+
+area                = shoelace_formula(path)
+num_interior_points = pick_theorem(area, path.size)
+
+p num_interior_points
+
+# PART II, using flood fill
 
 require 'set'
 
@@ -134,9 +153,9 @@ def find_point_inside_loop(grid)
 end
 
 def flood_fill(starting_point, grid)
-  q      = [starting_point]
-  seen   = Set.new
-  filled = Set.new
+  q          = [starting_point]
+  seen       = Set.new
+  num_filled = 0
 
   until q.empty?
     x, y = q.pop
@@ -149,7 +168,7 @@ def flood_fill(starting_point, grid)
 
     next if grid[y][x] != '*' && grid[y][x] != '.'
 
-    filled << [x, y] if grid[y][x] == '.'
+    num_filled += 1 if grid[y][x] == '.'
 
     q << [x, y + 1]
     q << [x, y - 1]
@@ -157,21 +176,7 @@ def flood_fill(starting_point, grid)
     q << [x - 1, y]
   end
 
-  # debug print
-  # (0..grid.size - 1).each do |y|
-  #   (0..grid[0].size).each do |x|
-  #     if filled.include?([x, y])
-  #       print 'I'
-  #     elsif seen.include?([x, y])
-  #       print 'X'
-  #     else
-  #       print grid[y][x]
-  #     end
-  #   end
-  #   puts
-  # end
-
-  filled.size
+  num_filled
 end
 
 input[start[1]][start[0]] = get_char_to_replace_start_with(path[1], path[-1])
