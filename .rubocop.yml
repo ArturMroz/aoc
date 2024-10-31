@@ -4,10 +4,19 @@ AllCops:
 Layout/MultilineMethodCallIndentation:
     EnforcedStyle: indented
 
-Naming/MethodParameterName:
+Metrics/AbcSize:
     Enabled: false
 
-Style/FrozenStringLiteralComment:
+Metrics/CyclomaticComplexity:
+    Enabled: false
+
+Metrics/MethodLength:
+    Enabled: false
+
+Metrics/PerceivedComplexity:
+    Enabled: false
+
+Naming/MethodParameterName:
     Enabled: false
 
 Style/NumericPredicate:
