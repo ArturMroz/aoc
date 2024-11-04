@@ -4,7 +4,7 @@ nodes  = {}
 $rates = {}
 $dists = Hash.new { |h, k| h[k] = Hash.new(1000) }
 
-File.read('/home/artur/code/aoc/2022/inputs/16.txt').split("\n").each do |line|
+File.read('inputs/16.txt').split("\n").each do |line|
   v, *neighbours = line.scan(/[A-Z]{2}/)
   rate = line[/\d+/].to_i
 
@@ -26,6 +26,7 @@ def dfs(v, time, state, flow, answer)
   $rates.keys.each do |u|
     new_time = time - $dists[v][u] - 1
     next if $indices[u] & state != 0 || new_time <= 0
+
     dfs(u, new_time, state | $indices[u], flow + new_time*$rates[u], answer)
   end
   answer
