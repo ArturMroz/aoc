@@ -50,10 +50,9 @@ end
 
 def reduce(root)
   loop do
-    case find_next_op(root)
-    in [:explode, node]
+    if (node = find_next_explode(root))
       explode(root, node)
-    in [:split, node]
+    elsif (node = find_next_split(root))
       split(node)
     else
       break
@@ -63,20 +62,16 @@ def reduce(root)
   root
 end
 
-def find_next_op(node)
-  find_next_explode(node) || find_next_split(node)
-end
-
 def find_next_explode(node, lvl = 0)
-  return nil              if node.val
-  return [:explode, node] if lvl == 4
+  return nil  if node.val
+  return node if lvl == 4
 
   find_next_explode(node.left, lvl + 1) || find_next_explode(node.right, lvl + 1)
 end
 
 def find_next_split(node)
-  return [:split, node] if node.val&.> 9
-  return nil            if node.val
+  return node if node.val&.> 9
+  return nil  if node.val
 
   find_next_split(node.left) || find_next_split(node.right)
 end
@@ -87,27 +82,20 @@ def magnitude(node)
   (3 * magnitude(node.left)) + (2 * magnitude(node.right))
 end
 
+nums = input.map { |line| eval(line) }
+
 # PART I
 
-nums = input.map { |line| parse_tree(eval(line)) }
-
-result = nums.reduce { |acc, cur| add(acc, cur) }
+result = nums
+  .map { |n| parse_tree(n) }
+  .reduce { |acc, cur| add(acc, cur) }
 
 p magnitude(result)
 
 # PART II
 
-nums = input.map { |line| parse_tree(eval(line)) }
-
-magnitudes = []
-nums.permutation(2).each do |num1, num2|
-  a = Marshal.load(Marshal.dump(num1))
-  b = Marshal.load(Marshal.dump(num2))
-  magnitudes << magnitude(add(a, b))
-
-  a = Marshal.load(Marshal.dump(num1))
-  b = Marshal.load(Marshal.dump(num2))
-  magnitudes << magnitude(add(b, a))
+magnitudes = nums.permutation(2).map do |a, b|
+  magnitude(add(parse_tree(a), parse_tree(b)))
 end
 
 p magnitudes.max
