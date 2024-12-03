@@ -1,6 +1,8 @@
 # https://adventofcode.com/2024/day/2
 
-input = File.read('inputs/02.txt').lines.map { |line| line.split.map(&:to_i) }
+input = File.read('inputs/02.txt')
+  .lines
+  .map { |line| line.split.map(&:to_i) }
 
 def safe_report?(report)
   report.each_cons(2).all? { |a, b| a - b > 0 && a - b <= 3 } || # strictly decreasing
@@ -17,10 +19,7 @@ puts num_safe
 
 num_safe = input.count do |report|
   report.size.times.any? do |i|
-    cur = report.dup
-    cur.delete_at(i)
-
-    safe_report?(cur)
+    safe_report?(report[...i] + report[i + 1..])
   end
 end
 
