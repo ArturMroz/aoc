@@ -19,14 +19,13 @@ enabled = true
 sum     = 0
 
 ops.each do |op|
-  case op
-  when 'do()'
+  if op == 'do()'
     enabled = true
-  when "don't()"
+  elsif op == "don't()"
     enabled = false
-  else
+  elsif enabled
     a, b = op.scan(/\d+/).map(&:to_i)
-    sum += a * b if enabled
+    sum += a * b
   end
 end
 
