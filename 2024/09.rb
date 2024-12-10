@@ -12,18 +12,6 @@ blocks_og = input.map.with_index do |num, i|
   end
 end.compact
 
-def checksum(blocks)
-  checksum = 0
-
-  blocks.each_with_index do |num, i|
-    next if num == -1
-
-    checksum += num * i
-  end
-
-  checksum
-end
-
 # PART I
 
 blocks = blocks_og.flatten
@@ -35,20 +23,23 @@ loop do
   i += 1 while blocks[i] != -1
   j -= 1 while blocks[j] == -1
 
-  break if i > j
+  break if i >= j
 
   blocks[i], blocks[j] = blocks[j], blocks[i]
 end
 
-p checksum(blocks)
+checksum = 0
+blocks.each_with_index do |num, i|
+  break if num == -1
+
+  checksum += num * i
+end
+
+p checksum
 
 # PART II
 
-Node = Struct.new(:prev, :next, :id, :len, :processed) do
-  def ==(other)
-    id == other.id
-  end
-end
+Node = Struct.new(:prev, :next, :id, :len, :processed)
 
 nodes = blocks_og.map do |b|
   Node.new(nil, nil, b[0], b.size, false)
@@ -59,22 +50,22 @@ nodes.each_cons(2) do |a, b|
   b.prev = a
 end
 
-head = nodes.first
-
+head  = nodes.first
 right = nodes.last
 
 loop do
   # find the next unprocessed file (right node)
-  right = right&.prev while right && (right.id <= 0 || right.processed)
+  right = right.prev while right && (right.id <= 0 || right.processed)
 
   break unless right # exit if no files to process left
 
-  # find the first empty space large enough to fit the file
   left = head
+  # find the first empty space large enough to fit the file
   while left && (left.id >= 0 || left.len < right.len)
     left = left.next
 
-    left = nil if left == right # left and right iterators crossed over
+    # using `equal?` instead of `==` so the nodes aren't compared recursively
+    left = nil if left.equal?(right) # left and right iterators crossed over
   end
 
   if left.nil?
@@ -85,11 +76,10 @@ loop do
 
   # split empty space in 2 if the file isn't big enough to cover all space
   if left.len > right.len
-    left.len = right.len
-
     new_node = Node.new(left, left.next, -1, left.len - right.len, false)
     left.next.prev = new_node if left.next
     left.next = new_node
+    left.len = right.len
   end
 
   # swap file with empty space
@@ -97,18 +87,15 @@ loop do
   left.processed = true
 end
 
-def nodes_to_list(head)
-  res = []
+checksum = 0
+i        = 0
+cur      = head
 
-  cur = head
-  while cur
-    res += [cur.id] * cur.len
-    cur = cur.next
-  end
+while cur
+  checksum += (i...(i + cur.len)).sum { |j| j * cur.id } if cur.id != -1
 
-  res
+  i += cur.len
+  cur = cur.next
 end
 
-blocks = nodes_to_list(head)
-
-p checksum(blocks)
+puts checksum
