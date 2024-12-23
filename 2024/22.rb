@@ -27,12 +27,12 @@ input.each do |secret|
     last_price = cur_price
 
     if diffs.size == 4
-      last_four = diffs.dup
+      last_four_hash = diffs.hash
 
       # sale happens on the first appearance of a sequence so we need to ignore later appearances
-      unless seen.include?(last_four)
-        prices_by_diffs[last_four] << cur_price
-        seen << last_four
+      unless seen.include?(last_four_hash)
+        prices_by_diffs[last_four_hash] << cur_price
+        seen << last_four_hash
       end
 
       diffs.shift
